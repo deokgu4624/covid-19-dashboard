@@ -1,24 +1,38 @@
-import logo from './logo.svg';
+import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import Header from './component/Header'
+import Notice from './component/Notice'
+import Global from './component/Global';
+import Countries from './component/Countries';
+import Footer from './component/Footer';
 
 function App() {
+  const country = ['kr', 'us', 'in', 'br', 'ru', 'fr', 'uk', 'tr'];
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+      <div className='background'></div>
+      <Header />
+        <Notice />
+        <Switch>
+          <Route exact path={process.env.PUBLIC_URL+'/'}>
+            <Redirect to='kr' />
+          </Route>
+          {country.map(function(item){
+            return (
+              <Route key={item} path={process.env.PUBLIC_URL+'/'+item}>
+                <Countries country={item} />
+              </Route>
+            )
+          })}
+          <Route path={process.env.PUBLIC_URL+'/global'}>
+            <Global />
+          </Route>
+        </Switch>
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 

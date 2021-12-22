@@ -1,0 +1,134 @@
+.card{
+    background-color: white;
+    text-align: left;
+    border-radius: .5rem;
+    padding: 10px 15px 0px 15px;
+    height: 100%;
+    border-style: none;
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.02);
+}
+.notice{
+    margin-top: 100px;
+}
+.desc{
+    font-weight: normal;
+    font-size: 15px;
+    font-family: 'Nanum Gothic'
+}
+.arrow{
+    margin-left: 5px;
+    margin-top: -1px;
+}
+.wrapper{
+    display: inline-block;
+    width: 50%;
+    padding-right: 10px;
+}
+.img{
+    position: absolute;
+    width: 213px;
+    right: 30px;
+    bottom: 0px;
+}
+.notice, .container{
+    width: 90%;
+}
+.country{
+    font-size: 15px;
+    font-weight: bolder;
+    margin: 30px 0;
+    
+}
+.tableWrapper{
+    width: 100%;
+    overflow-x: auto;
+    white-space:nowrap;
+    padding: 0 40px;
+}
+.category{
+    font-size: 15px;
+    color: #989898;
+    font-weight: normal;
+    display: inline-block;
+    font-family: 'Nanum Gothic'
+}
+.tableLine{
+    position: absolute;
+    top: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 96%;
+    height: 1px;
+    background-color: black;
+}
+.countryName, .cases, .deaths, .active, .recovered, .critical{
+    display: inline-block;
+    width: 180px;
+    font-family: 'Nanum Gothic';
+}
+.deaths{
+    color: #FF8F9F;
+}
+.critical{
+    width: auto;
+}
+.chart{
+    position: relative;
+    width: 98.5%;
+    left: 50%;
+    transform: translateX(-50.5%);
+}
+
+@media (max-width: 575px) {
+    .notice, .container{
+        width: 90%;
+    }
+    .wrapper{
+        width: 100%;
+    }
+    .img{
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 50%;
+        margin-bottom: 30px;
+    }
+}
+@media (max-width: 575px) {
+    .img{
+        width: 200px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+@media (min-width: 576px) and (max-width: 767px) {
+    .img{
+        right: 30px;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    .img{
+        bottom: 0px;
+        width: 200px;
+        right: 60px;
+    }
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+    .img{
+        width: 40%;
+        top: 28px;
+    }
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .countryName, .cases, .deaths, .active, .recovered{
+        width: 184px;
+    }
+}
+@media (min-width: 1399px) {
+    .img{
+        right: 40px;
+    }
+    .countryName, .cases, .deaths, .active, .recovered{
+        width: 220px;
+    }
+}

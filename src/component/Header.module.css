@@ -1,0 +1,20 @@
+.nav{
+    font-weight: bold;
+    width: 90%;
+}
+.logo{
+    font-family: 'NanumSquareRound';
+    font-weight: bolder;
+}
+.logo2{
+    color: white;
+    margin-right: 30px;
+}
+hr{
+    margin: 0;
+    color: white;
+    opacity: .1;
+}
+.countryList{
+    font-family: 'Nanum Gothic';
+}
