@@ -1,8 +1,8 @@
-# Getting Started with Create React App
+# 코로나 19 대시보드
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## 페이지 구조
 
 In the project directory, you can run:
 
