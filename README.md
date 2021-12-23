@@ -1,6 +1,6 @@
 # 코로나 19 대시보드
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+`react` `axios` `react-bootstrap`
 
 ## 페이지 구조
 
