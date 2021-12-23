@@ -1,6 +1,6 @@
 # 코로나 19 대시보드
 
-`react` `axios` `react-router-dom` `react-bootstrap` `apexcharts`
+`react` `axios` `react-router-dom` `react-bootstrap` `apexcharts` `i18next`
 
 코로나 현황을 볼 수 있는 대시보드 사이트입니다.
 
@@ -182,4 +182,36 @@ useEffect(()=>{
 
 ## Table.js
 
+![제목 없음](https://user-images.githubusercontent.com/37141223/147287926-f5bd47be-ed3f-4ec4-ade6-2b57dba2aa74.png)
 
+```javascript
+<div className={styles.countryName}>
+    <div className={styles.category}>국가명</div>
+    {props.data.map(el => {
+        return (<div key={el.country} className={styles.country}>
+            {t(el.country)}
+        </div>)
+    })}
+</div>
+```
+
+`Global.js`에서 `props`로 받아온 data중에서 수많은 국가명을 나열하기 위해 `map()`으로 반복시켜 `<div />`를 반환하는식으로 만들었습니다.
+
+```javascript
+"USA": '미국',
+"India": '인도',
+"Brazil": '브라질',
+"Russia": '러시아',
+"France": '프랑스',
+"UK": '영국',
+"Turkey": '터키',
+"Argentina": '아르헨티나',
+"Colombia": '콜롬비아',
+"Spain": '스페인',
+"Italy": '이탈리아',
+"Iran": '이란',
+"Indonesia": '인도네시아',
+"Germany": '독일',
+```
+
+데이터의 국가명은 영어였기때문에 `i18next`로 한글명을 대응시켜주었습니다.
