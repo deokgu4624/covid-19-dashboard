@@ -2,6 +2,8 @@
 
 `react` `axios` `react-bootstrap`
 
+![제목 없음](https://user-images.githubusercontent.com/37141223/147278046-f695d191-5496-4217-9764-418e2cd45156.png)
+
 ## 페이지 구조
 
 In the project directory, you can run:
