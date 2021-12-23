@@ -155,12 +155,31 @@ const series1 = [{
 
 배열형식의 데이터를 `data`에 그대로 넣어주었고 옵션은 딱히 건드리지 않았습니다.
 
+![제목 없음](https://user-images.githubusercontent.com/37141223/147287373-f9a4290a-a048-4cee-980e-f6db4c4f0123.png)
+
 ## Global.js
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```javascript
+const [data1, setData1] = useState([]);
+const [data2, setData2] = useState([]);
+const [loading, setLoading] = useState(true);
+useEffect(()=>{
+    const fetchEvents = async ()=>{
+        await axios
+                    .all([axios.get('https://corona.lmao.ninja/v2/all?today='), axios.get('https://corona.lmao.ninja/v2/countries?yesterday=&sort=cases')])
+                    .then(
+                        axios.spread((res1, res2) => {
+                            setData1(res1.data);
+                            setData2(res2.data);
+                            setLoading(false);
+                        }))
+    }
+    fetchEvents();
+}, []);
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+전세계 현황은 한 곳에서 데이터를 가져오는게 아니기때문에 `spread`를 통해서 데이터를 `data1`과 `data2`에 각각 넣어주었습니다. 방식은 `Countries.js`와 동일하므로 생략하겠습니다.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Table.js
+
+
