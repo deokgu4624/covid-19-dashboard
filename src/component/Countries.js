@@ -29,7 +29,6 @@ export default function Countries(props){
     const recovered = cur.Recovered;
     const date = cur.Date;
     acc.push({confirmed, active, deaths, recovered, date})
-      
       return acc;
     }, [])
     const cardConfirmed = cardData.map(function(item){
@@ -69,7 +68,6 @@ export default function Countries(props){
     const recentConfirmed = cardConfirmed.slice(-9, -1);
     const getToday = recentConfirmed.map(function(item, index, array){
         const arr = array[index+1]-array[index];
-        
       return arr
     })
     const recentMovement =getToday.slice(0,7);
