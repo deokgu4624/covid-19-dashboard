@@ -5,7 +5,8 @@
   2.1. [Axios로 데이터 받아오기](#axios로-데이터-받아오기)  
   2.2. [필요한 데이터 가공](#필요한-데이터-가공)  
   2.3. [차트에 데이터 넣기](#차트에-데이터-넣기)  
-  2.3. [번역](#번역)  
+  2.4. [표 만들기](#표-만들기)  
+  2.5. [번역](#번역)  
 3. [사용한 라이브러리](#사용한-라이브러리)
 ## 개요
 React, Axios, 코로나 API를 사용한 코로나 현황 대시보드 사이트입니다.
@@ -18,8 +19,84 @@ React, Axios, 코로나 API를 사용한 코로나 현황 대시보드 사이트
 
 ## 과정
 ### Axios로 데이터 받아오기
+```javascript
+useEffect(()=>{
+  const fetchEvents = async ()=>{
+    await axios
+            .get('https://api.covid19api.com/total/dayone/country/'+props.country)
+            .then(res =>{
+              setData(res.data);
+              setLoading(false);
+            })
+  }
+  fetchEvents();
+}, [props])
+```
 ### 필요한 데이터 가공
+```javascript
+const cardData = Data.reduce(function(acc, cur){
+  const confirmed = cur.Confirmed;
+  const active = cur.Active;
+  const deaths = cur.Deaths;
+  const recovered = cur.Recovered;
+  const date = cur.Date;
+acc.push({confirmed, active, deaths, recovered, date})
+  return acc;
+}, [])
+const cardConfirmed = cardData.map(function(item){
+  return item.confirmed;
+})
+const cardActive = cardData.map(function(item){
+  return item.active;
+})
+const cardDeaths = cardData.map(function(item){
+  return item.deaths;
+})
+const cardRecovered = cardData.map(function(item){
+  return item.recovered;
+})
+const cardDate = cardData.map(function(item){
+  return item.date;
+})
+
+const arr = Data.reduce(function(acc, cur){
+    const currentDate = new Date(cur.Date);
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const date = currentDate.getDate();
+    const confirmed = cur.Confirmed;
+    const active = cur.Active;
+    const deaths = cur.Deaths;
+    const recovered = cur.Recovered;
+    if(date === 1){
+      acc.push({year, month, date, confirmed, active, deaths, recovered, currentDate:cur.Date})
+    }
+  return acc;
+}, [])
+const confirmed = arr.map(function(item){
+  return item.confirmed;
+})
+const recentConfirmed = cardConfirmed.slice(-9, -1);
+const getToday = recentConfirmed.map(function(item, index, array){
+    const arr = array[index+1]-array[index];
+  return arr
+})
+const recentMovement =getToday.slice(0,7);
+const active = arr.map(function(item){
+  return item.active;
+})
+const deaths = arr.map(function(item){
+  return item.deaths;
+})
+const recovered = arr.map(function(item){
+  return item.recovered;
+})
+const currentDate = arr.map(function(item){
+  return item.currentDate;
+})
+```
 ### 차트에 데이터 넣기
+### 표 만들기
 ### 번역
 ```javascript
 function App() {
