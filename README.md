@@ -1,20 +1,26 @@
 # 코로나 19 대시보드
-
-`react` `axios` `react-router-dom` `react-bootstrap` `apexcharts` `i18next`
+## 목차
+1. [개요](#개요)
+2. [과정](#과정)  
+  2.1. [Axios로 데이터 받아오기](#axios로-데이터-받아오기)  
+  2.2. [필요한 데이터 가공](#필요한-데이터-가공)  
+  2.3. [차트에 데이터 넣기](#차트에-데이터-넣기)  
+  2.3. [번역](#번역)  
+3. [사용한 라이브러리](#사용한-라이브러리)
 ## 개요
-코로나 현황을 볼 수 있는 대시보드 사이트입니다.
+React, Axios, 코로나 API를 사용한 코로나 현황 대시보드 사이트입니다.
 
 ![제목 없음](https://user-images.githubusercontent.com/37141223/147278046-f695d191-5496-4217-9764-418e2cd45156.png)
+확진자 추이 차트입니다. `reduce`, `map`함수를 사용했습니다.
 ![제목 없음](https://user-images.githubusercontent.com/37141223/147287373-f9a4290a-a048-4cee-980e-f6db4c4f0123.png)
+국가별 현황표 입니다. `reduce`, `map`함수를 사용했습니다.
 ![제목 없음](https://user-images.githubusercontent.com/37141223/147287926-f5bd47be-ed3f-4ec4-ade6-2b57dba2aa74.png)
 
-
-
-
-크게 `App.js` `Countries.js` `Global.js`으로 구성되어있고, `axios`를 활용하여 코로나 api 데이터를 받아온 후 필요한 데이터만 `reduce()`로 원하는 배열로 바꾸어 차트에 대입시키는 구조입니다.
-
 ## 과정
-
+### Axios로 데이터 받아오기
+### 필요한 데이터 가공
+### 차트에 데이터 넣기
+### 번역
 ```javascript
 function App() {
   const country = ['kr', 'us', 'in', 'br', 'ru', 'fr', 'uk', 'tr'];
@@ -217,3 +223,5 @@ useEffect(()=>{
 ```
 
 데이터의 국가명은 영어였기때문에 `i18next`로 한글명을 대응시켜주었습니다.
+## 사용한 라이브러리
+`react` `axios` `react-router-dom` `react-bootstrap` `apexcharts` `i18next`
