@@ -1,16 +1,19 @@
 # 코로나 19 대시보드
 
 `react` `axios` `react-router-dom` `react-bootstrap` `apexcharts` `i18next`
-
+## 개요
 코로나 현황을 볼 수 있는 대시보드 사이트입니다.
 
 ![제목 없음](https://user-images.githubusercontent.com/37141223/147278046-f695d191-5496-4217-9764-418e2cd45156.png)
+![제목 없음](https://user-images.githubusercontent.com/37141223/147287373-f9a4290a-a048-4cee-980e-f6db4c4f0123.png)
+![제목 없음](https://user-images.githubusercontent.com/37141223/147287926-f5bd47be-ed3f-4ec4-ade6-2b57dba2aa74.png)
 
-## 프로젝트 구조
+
+
 
 크게 `App.js` `Countries.js` `Global.js`으로 구성되어있고, `axios`를 활용하여 코로나 api 데이터를 받아온 후 필요한 데이터만 `reduce()`로 원하는 배열로 바꾸어 차트에 대입시키는 구조입니다.
 
-## App.js
+## 과정
 
 ```javascript
 function App() {
@@ -155,7 +158,6 @@ const series1 = [{
 
 배열형식의 데이터를 `data`에 그대로 넣어주었고 옵션은 딱히 건드리지 않았습니다.
 
-![제목 없음](https://user-images.githubusercontent.com/37141223/147287373-f9a4290a-a048-4cee-980e-f6db4c4f0123.png)
 
 ## Global.js
 
@@ -182,7 +184,7 @@ useEffect(()=>{
 
 ## Table.js
 
-![제목 없음](https://user-images.githubusercontent.com/37141223/147287926-f5bd47be-ed3f-4ec4-ade6-2b57dba2aa74.png)
+
 
 ```javascript
 <div className={styles.countryName}>
