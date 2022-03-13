@@ -20,7 +20,7 @@ React, Axios, 코로나 API를 사용한 코로나 현황 대시보드 사이트
 
 ## 과정
 ### Axios로 데이터 받아오기
-axios로 api 데이터를 받습니다. 데이터는 `useState`의 `data` 변수로 들어갑니다.
+`useEffect`는 axios로 api 데이터를 받습니다. 데이터는 `useState`의 `data` 변수로 들어갑니다.
 ```javascript
 useEffect(()=>{
   axios.get('https://api.covid19api.com/total/dayone/country/'+props.country)
