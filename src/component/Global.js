@@ -1,7 +1,6 @@
 
 import { useState, useEffect } from "react"
 import { Card, Container, Row, Col } from "react-bootstrap";
-import axios from 'axios'
 import styles from './Card.module.css'
 import arrow from '../arrow.png'
 import Table from './Table'
@@ -13,19 +12,16 @@ export default function Global(){
     const [data2, setData2] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(()=>{
-        const fetchEvents = async ()=>{
-            await axios
-                        .all([axios.get('https://corona.lmao.ninja/v2/all?today='), axios.get('https://corona.lmao.ninja/v2/countries?yesterday=&sort=cases')])
-                        .then(
-                            axios.spread((res1, res2) => {
-                                setData1(res1.data);
-                                setData2(res2.data);
-                                setLoading(false);
-                            }))
+        const axios = require('axios');
+        async function getData(){
+            const res1 = await axios.get('https://corona.lmao.ninja/v2/all?today=');
+            setData1(res1.data);
+            const res2 = await axios.get('https://corona.lmao.ninja/v2/countries?yesterday=&sort=cases');
+            setData2(res2.data);
+            setLoading(false);
         }
-        fetchEvents();
-    }, []);
-    
+        getData();
+    },[]);
     return(
         <>
             {loading ? <Loading /> :

@@ -9,17 +9,13 @@ import arrow from '../arrow.png'
 export default function Countries(props){
     const [loading, setLoading] = useState(true);
     const [Data, setData] = useState([]);
-  useEffect(()=>{
-    const fetchEvents = async ()=>{
-      await axios
-              .get('https://api.covid19api.com/total/dayone/country/'+props.country)
-              .then(res =>{
-                setData(res.data);
-                setLoading(false);
-              })
-    }
-    fetchEvents();
-  }, [props])
+    useEffect(()=>{
+      axios.get('https://api.covid19api.com/total/dayone/country/'+props.country)
+                .then(res =>{
+                  setData(res.data);
+                  setLoading(false);
+                })
+      },[props])
 
     //카드데이터
     const cardData = Data.reduce(function(acc, cur){
