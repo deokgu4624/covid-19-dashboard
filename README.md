@@ -31,7 +31,7 @@ useEffect(()=>{
   },[props])
 ```
 ### 필요한 데이터 가공
-대시보드에 표시될 수치 데이터입니다. `reduce`함수를 사용해서 원하는 분류들을 새 배열에 넣어주고 `map`함수로 한가지 분류로만 이루어진 배열을 만듭니다.
+대시보드에 표시될 수치 데이터입니다. `reduce`함수는 원하는 분류들을 새 배열에 넣어주고 `map`함수는 한가지 분류로만 이루어진 배열을 만듭니다.
 ```javascript
 const cardData = Data.reduce(function(acc, cur){
   const confirmed = cur.Confirmed;
@@ -58,7 +58,7 @@ const cardDate = cardData.map(function(item){
   return item.date;
 })
 ```
-차트에 들어갈 데이터입니다. 동일하게 `reduce`와 `map`함수로 분류별로 정리해줍니다.
+차트에 들어갈 데이터입니다. 데이터는 동일하게 `reduce`와 `map`함수로 정리됩니다.
 ```javascript
 const arr = Data.reduce(function(acc, cur){
     const currentDate = new Date(cur.Date);
@@ -97,7 +97,7 @@ const currentDate = arr.map(function(item){
 })
 ```
 ### 차트에 데이터 넣기
-`apexcharts` 라이브러리를 사용한 area 차트입니다. 분류해놓은 배열들이 각각 data에 들어갑니다. 차트 옵션중에서는 `yaxis`->`labes` 단위를 1000명기준으로 변경했습니다.
+`apexcharts` 라이브러리를 사용한 area 차트입니다. 분류해놓은 배열들이 각각 data에 들어갑니다. 차트 옵션중에서는 `yaxis`->`labes` 단위가 1000명기준으로 변경되었습니다.
 ```javascript
 const series1 = [{
   name: '확진자',
@@ -151,7 +151,7 @@ const options = {
 }
 ```
 ### 표 만들기
-표 데이터는 각각 `map`함수를 사용해서 `<div>`태그로  카테고리 아래로 쭉 나열되게 됩니다. 국가명에 t는 아래 후술하는 `i18next`라이브러리의 문법입니다.
+표 데이터는 각각 `map`함수를 사용해서 `<div>`태그로  카테고리 아래로 쭉 나열됩니다. 국가명에 t는 아래 후술하는 `i18next`라이브러리의 문법입니다.
 ```javascript
 <div className={styles.countryName}>
     <div className={styles.category}>국가명</div>
