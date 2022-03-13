@@ -1,98 +1,47 @@
 # 코로나 19 대시보드
-
-`react` `axios` `react-router-dom` `react-bootstrap` `apexcharts` `i18next`
-
-코로나 현황을 볼 수 있는 대시보드 사이트입니다.
-
+## 목차
+1. [개요](#개요)
+2. [과정](#과정)  
+  2.1. [Axios로 데이터 받아오기](#axios로-데이터-받아오기)  
+  2.2. [필요한 데이터 가공](#필요한-데이터-가공)  
+  2.3. [차트에 데이터 넣기](#차트에-데이터-넣기)  
+  2.4. [표 만들기](#표-만들기)  
+  2.5. [번역](#번역)  
+3. [사용한 라이브러리](#사용한-라이브러리)
+## 개요
+React, Axios, 코로나 API를 사용한 코로나 현황 대시보드 사이트입니다. `map`, `reduce` 함수를 주로 활용했습니다.
 ![제목 없음](https://user-images.githubusercontent.com/37141223/147278046-f695d191-5496-4217-9764-418e2cd45156.png)
 
-## 프로젝트 구조
+확진자 추이와 최근 동향 차트입니다. 최근 동향은 7일간을 표시합니다.
+![제목 없음](https://user-images.githubusercontent.com/37141223/147287373-f9a4290a-a048-4cee-980e-f6db4c4f0123.png)
 
-크게 `App.js` `Countries.js` `Global.js`으로 구성되어있고, `axios`를 활용하여 코로나 api 데이터를 받아온 후 필요한 데이터만 `reduce()`로 원하는 배열로 바꾸어 차트에 대입시키는 구조입니다.
+국가별 현황표 입니다. 누적 확진자, 누적 사망자, 누적 격리자, 누적 완치자, 치명률을 표시합니다.
+![제목 없음](https://user-images.githubusercontent.com/37141223/147287926-f5bd47be-ed3f-4ec4-ade6-2b57dba2aa74.png)
 
-## App.js
-
+## 과정
+### Axios로 데이터 받아오기
+axios로 api 데이터를 받습니다. 데이터는 `useState`의 `data` 변수로 들어갑니다.
 ```javascript
-function App() {
-  const country = ['kr', 'us', 'in', 'br', 'ru', 'fr', 'uk', 'tr'];
-  return (
-    <BrowserRouter>
-      <div className="App">
-      <div className='background'></div>
-      <Header />
-        <Notice />
-        <Switch>
-          <Route exact path={process.env.PUBLIC_URL+'/'}>
-            <Redirect to='kr' />
-          </Route>
-          {country.map(function(item){
-            return (
-              <Route key={item} path={process.env.PUBLIC_URL+'/'+item}>
-                <Countries country={item} />
-              </Route>
-            )
-          })}
-          <Route path={process.env.PUBLIC_URL+'/global'}>
-            <Global />
-          </Route>
-        </Switch>
-        <Footer />
-      </div>
-    </BrowserRouter>
-  );
-}
-```
-
-`react-router`를 사용하여 `<Header />`와 `<Notice />`부분은 바뀌지 않고 `<Switch />` 안에 있는 것만 바뀌도록 하였습니다. 
-
-```javascript
-{country.map(function(item){
-  return (
-    <Route key={item} path={process.env.PUBLIC_URL+'/'+item}>
-      <Countries country={item} />
-    </Route>
-  )
-})}
-```
-
-이 부분은 <Countries /> 가 형식은 똑같고 데이터만 다르기 때문에 `map()`을 사용하여 반복을 해주고 `item`으로 주소의 끝부분만 `prop`로 전달하였습니다.
-예를 들어 주소가 'https://api.covid19api.com/total/dayone/country/' 일 때 맨 뒤에 국가코드를 붙여주면 해당 국가의 데이터를 불러올 수 있기 때문입니다.
-
-## Countries.js
-
-```javascript
-const [loading, setLoading] = useState(true);
-const [Data, setData] = useState([]);
 useEffect(()=>{
-const fetchEvents = async ()=>{
-  await axios
-          .get('https://api.covid19api.com/total/dayone/country/'+props.country)
-          .then(res =>{
-            setData(res.data);
-            setLoading(false);
-          })
-}
-fetchEvents();
-}, [props])
+  axios.get('https://api.covid19api.com/total/dayone/country/'+props.country)
+            .then(res =>{
+              setData(res.data);
+              setLoading(false);
+            })
+  },[props])
 ```
-
-`axios`를 사용해서 api주소에서 데이터를 받아왔고, `useState`를 사용해서 `Data`에 데이터 배열을 담았습니다. `setLoading`은 데이터를 아직 다 불러오지 못해서 대시보드는 있는데 숫자만 없는 상황을 막기 위해서 만들어놨습니다. `true`일 때는 로딩스피너가 돌아가고 대시보드가 표시되지 않습니다.
-
+### 필요한 데이터 가공
+대시보드에 표시될 수치 데이터입니다. `reduce`함수를 사용해서 원하는 분류들을 새 배열에 넣어주고 `map`함수로 한가지 분류로만 이루어진 배열을 만듭니다.
 ```javascript
 const cardData = Data.reduce(function(acc, cur){
-const confirmed = cur.Confirmed;
-const active = cur.Active;
-const deaths = cur.Deaths;
-const recovered = cur.Recovered;
-const date = cur.Date;
+  const confirmed = cur.Confirmed;
+  const active = cur.Active;
+  const deaths = cur.Deaths;
+  const recovered = cur.Recovered;
+  const date = cur.Date;
 acc.push({confirmed, active, deaths, recovered, date})
   return acc;
 }, [])
-```
-
-받아온 데이터를 가공하는 부분입니다. 쓸모없는 데이터는 버리고 필요한 부분만 가져오기 위해서 `reduce()`를 사용해서 데이터 내 처음부터 마지막날 까지 순회하여 `Confirmed`, `Active`, `Deaths`, `Recovered`, `Date` 값을 가져오며 `push`를 사용하여 그 값들로 채워진 배열을 만들었습니다.
-
-```javascript
 const cardConfirmed = cardData.map(function(item){
   return item.confirmed;
 })
@@ -109,17 +58,7 @@ const cardDate = cardData.map(function(item){
   return item.date;
 })
 ```
-
-만든 배열에서 `confirmed`, `active`, `deaths` 등 사용하기 편리하게 항목별로 분리하여 배열을 만들었습니다.
-
-```javacript
-<Card.Text className={'number'}>
-  {cardConfirmed[cardConfirmed.length-2]}명
-</Card.Text>
-```
-
-이런식으로 만들어놓은 배열 중에서 필요한 순서를 골라서 넣었습니다.
-
+차트에 들어갈 데이터입니다. 동일하게 `reduce`와 `map`함수로 분류별로 정리해줍니다.
 ```javascript
 const arr = Data.reduce(function(acc, cur){
     const currentDate = new Date(cur.Date);
@@ -135,14 +74,30 @@ const arr = Data.reduce(function(acc, cur){
     }
   return acc;
 }, [])
+const confirmed = arr.map(function(item){
+  return item.confirmed;
+})
+const recentConfirmed = cardConfirmed.slice(-9, -1);
+const getToday = recentConfirmed.map(function(item, index, array){
+    const arr = array[index+1]-array[index];
+  return arr
+})
+const recentMovement =getToday.slice(0,7);
+const active = arr.map(function(item){
+  return item.active;
+})
+const deaths = arr.map(function(item){
+  return item.deaths;
+})
+const recovered = arr.map(function(item){
+  return item.recovered;
+})
+const currentDate = arr.map(function(item){
+  return item.currentDate;
+})
 ```
-
-똑같은 방식으로 차트에 넣을 데이터를 가공하였습니다. 차트에는 1달 간격의 데이터가 필요했기때문에 조건문을 사용하여 날짜가 1일때만 `push`하도록 했습니다.
-
-```javascript
-<ReactApexChart className={styles.chart} options={options} series={series1} type="area" height={350} />
-```
-
+### 차트에 데이터 넣기
+`apexcharts` 라이브러리를 사용한 area 차트입니다. 분류해놓은 배열들이 각각 data에 들어갑니다. 차트 옵션중에서는 `yaxis`->`labes` 단위를 1000명기준으로 변경했습니다.
 ```javascript
 const series1 = [{
   name: '확진자',
@@ -151,39 +106,52 @@ const series1 = [{
   name: '격리자',
   data: active
 }];
-```
-
-배열형식의 데이터를 `data`에 그대로 넣어주었고 옵션은 딱히 건드리지 않았습니다.
-
-![제목 없음](https://user-images.githubusercontent.com/37141223/147287373-f9a4290a-a048-4cee-980e-f6db4c4f0123.png)
-
-## Global.js
-
-```javascript
-const [data1, setData1] = useState([]);
-const [data2, setData2] = useState([]);
-const [loading, setLoading] = useState(true);
-useEffect(()=>{
-    const fetchEvents = async ()=>{
-        await axios
-                    .all([axios.get('https://corona.lmao.ninja/v2/all?today='), axios.get('https://corona.lmao.ninja/v2/countries?yesterday=&sort=cases')])
-                    .then(
-                        axios.spread((res1, res2) => {
-                            setData1(res1.data);
-                            setData2(res2.data);
-                            setLoading(false);
-                        }))
+const series2 = [{
+  name: '사망자',
+  data: deaths
+}]
+const series3 = [{
+  name: '일일 확진자',
+  data: recentMovement
+}];
+const options = {
+  chart: {
+    height: 350,
+    type: 'area',
+    toolbar: {
+      show: false}
+  },
+  dataLabels: {
+    enabled: false
+  },
+  stroke: {
+    curve: 'smooth'
+  },
+  xaxis: {
+    type: 'datetime',
+    categories: currentDate
+  },
+  yaxis: {
+    labels: {
+      formatter: function (value) {
+        return value/1000 + "K";
+      }
+    },
+  },
+  tooltip: {
+    x: {
+      format: 'yy/MM/dd'
+    },
+    y: {
+      formatter: function(value) {
+        return value
+      }
     }
-    fetchEvents();
-}, []);
+  },
+}
 ```
-
-전세계 현황은 한 곳에서 데이터를 가져오는게 아니기때문에 `spread`를 통해서 데이터를 `data1`과 `data2`에 각각 넣어주었습니다. 방식은 `Countries.js`와 동일하므로 생략하겠습니다.
-
-## Table.js
-
-![제목 없음](https://user-images.githubusercontent.com/37141223/147287926-f5bd47be-ed3f-4ec4-ade6-2b57dba2aa74.png)
-
+### 표 만들기
+표 데이터는 각각 `map`함수를 사용해서 `<div>`태그로  카테고리 아래로 쭉 나열되게 됩니다. 국가명에 t는 아래 후술하는 `i18next`라이브러리의 문법입니다.
 ```javascript
 <div className={styles.countryName}>
     <div className={styles.category}>국가명</div>
@@ -193,25 +161,82 @@ useEffect(()=>{
         </div>)
     })}
 </div>
+<div className={styles.cases}>
+    <div className={styles.category}>확진자</div>
+    {props.data.map(el => {
+        return (<div key={el.country} className={styles.country}>
+            {el.cases}
+        </div>)
+    })}
+</div>
+<div className={styles.deaths}>
+    <div className={styles.category}>사망자</div>
+    {props.data.map(el => {
+        return (<div key={el.country} className={styles.country}>
+            {el.deaths}
+        </div>)
+    })}
+</div>
+<div className={styles.active}>
+    <div className={styles.category}>격리자</div>
+    {props.data.map(el => {
+        return (<div key={el.country} className={styles.country}>
+            {el.active}
+        </div>)
+    })}
+</div>
+<div className={styles.recovered}>
+    <div className={styles.category}>완치자</div>
+    {props.data.map(el => {
+        return (<div key={el.country} className={styles.country}>
+            {el.recovered}
+        </div>)
+    })}
+</div>
+<div className={styles.critical}>
+    <div className={styles.category}>치명률</div>
+    {props.data.map(el => {
+        return (<div key={el.country} className={styles.country}>
+            {Math.floor(el.deaths / el.cases * 1000)/10}%
+        </div>)
+    })}
+</div>
 ```
-
-`Global.js`에서 `props`로 받아온 data중에서 수많은 국가명을 나열하기 위해 `map()`으로 반복시켜 `<div />`를 반환하는식으로 만들었습니다.
-
+### 번역
+데이터의 국가명은 영어였기때문에 `i18next` 라이브러리로 한글명을 대응시켰습니다.
 ```javascript
-"USA": '미국',
-"India": '인도',
-"Brazil": '브라질',
-"Russia": '러시아',
-"France": '프랑스',
-"UK": '영국',
-"Turkey": '터키',
-"Argentina": '아르헨티나',
-"Colombia": '콜롬비아',
-"Spain": '스페인',
-"Italy": '이탈리아',
-"Iran": '이란',
-"Indonesia": '인도네시아',
-"Germany": '독일',
+i18n
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: {
+            "USA": '미국',
+            "India": '인도',
+            "Brazil": '브라질',
+            "Russia": '러시아',
+            "France": '프랑스',
+            "UK": '영국',
+            "Turkey": '터키',
+            "Argentina": '아르헨티나',
+            "Colombia": '콜롬비아',
+            "Spain": '스페인',
+            "Italy": '이탈리아',
+            "Iran": '이란',
+            "Indonesia": '인도네시아',
+            "Germany": '독일',
+            ...
+          }
+      }
+    },
+    lng: "en",
+    fallbackLng: "en",
+
+    interpolation: {
+      escapeValue: false
+    }
+  });
 ```
 
-데이터의 국가명은 영어였기때문에 `i18next`로 한글명을 대응시켜주었습니다.
+## 사용한 라이브러리
+`react` `axios` `react-router-dom` `react-bootstrap` `apexcharts` `i18next`
